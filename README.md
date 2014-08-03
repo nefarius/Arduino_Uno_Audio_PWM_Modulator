@@ -1,2 +1,2 @@
-Arduino_Uno_Audio_PWM_Modulator
+Arduino Uno Audio PWM Modulator
 ===============================
