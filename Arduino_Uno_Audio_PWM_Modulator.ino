@@ -13,33 +13,29 @@
  
  */
 
-//Low pass butterworth filter order=4 alpha1=0.015 
+// http://www.schwietering.com/jayduino/filtuino/index.php?characteristic=ch&passmode=lp&order=2&chebrip=-3&usesr=usesr&sr=10000&frequencyLow=150&noteLow=&noteHigh=&pw=pw&calctype=float&run=Send
+//Low pass chebyshev filter order=2 alpha1=0.015 
 class filter
 {
 	public:
 		filter()
 		{
-			for(int i=0; i <= 4; i++)
-				v[i]=0.0;
+			v[0]=0.0;
+			v[1]=0.0;
 		}
 	private:
-		float v[5];
+		float v[3];
 	public:
 		float step(float x) //class II 
 		{
 			v[0] = v[1];
 			v[1] = v[2];
-			v[2] = v[3];
-			v[3] = v[4];
-			v[4] = (4.372688797764e-6 * x)
-				 + ( -0.7816187403 * v[0])
-				 + (  3.3189386048 * v[1])
-				 + ( -5.2911525842 * v[2])
-				 + (  3.7537627567 * v[3]);
+			v[2] = (1.525641465230e-3 * x)
+				 + ( -0.9410599330 * v[0])
+				 + (  1.9349573671 * v[1]);
 			return 
-				 (v[0] + v[4])
-				+4 * (v[1] + v[3])
-				+6 * v[2];
+				 (v[0] + v[2])
+				+2 * v[1];
 		}
 };
 
@@ -72,8 +68,7 @@ void loop(){
   raw = f.step(analogRead(0));
   volt = (5.0 * raw) / 1023;
   duty = 255 * (volt / 5);
-  //analogWrite(6, duty);
-  analogWrite(6, raw);
+  analogWrite(6, duty);
 }
 
 
