@@ -13,6 +13,37 @@
  
  */
 
+//Low pass butterworth filter order=4 alpha1=0.015 
+class filter
+{
+	public:
+		filter()
+		{
+			for(int i=0; i <= 4; i++)
+				v[i]=0.0;
+		}
+	private:
+		float v[5];
+	public:
+		float step(float x) //class II 
+		{
+			v[0] = v[1];
+			v[1] = v[2];
+			v[2] = v[3];
+			v[3] = v[4];
+			v[4] = (4.372688797764e-6 * x)
+				 + ( -0.7816187403 * v[0])
+				 + (  3.3189386048 * v[1])
+				 + ( -5.2911525842 * v[2])
+				 + (  3.7537627567 * v[3]);
+			return 
+				 (v[0] + v[4])
+				+4 * (v[1] + v[3])
+				+6 * v[2];
+		}
+};
+
+filter f;
 int duty;
 int raw;
 float volt;
@@ -38,10 +69,11 @@ void setup(){
   // ADC Boost End
 }
 void loop(){
-  raw = analogRead (0);
+  raw = f.step(analogRead(0));
   volt = (5.0 * raw) / 1023;
   duty = 255 * (volt / 5);
-  analogWrite(6, duty);
+  //analogWrite(6, duty);
+  analogWrite(6, raw);
 }
 
 
