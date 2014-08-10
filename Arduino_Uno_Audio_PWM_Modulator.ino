@@ -17,26 +17,26 @@
 //Low pass chebyshev filter order=2 alpha1=0.015 
 class filter
 {
-	public:
-		filter()
-		{
-			v[0]=0.0;
-			v[1]=0.0;
-		}
-	private:
-		float v[3];
-	public:
-		float step(float x) //class II 
-		{
-			v[0] = v[1];
-			v[1] = v[2];
-			v[2] = (1.525641465230e-3 * x)
-				 + ( -0.9410599330 * v[0])
-				 + (  1.9349573671 * v[1]);
-			return 
-				 (v[0] + v[2])
-				+2 * v[1];
-		}
+public:
+  filter()
+  {
+    v[0]=0.0;
+    v[1]=0.0;
+  }
+private:
+  float v[3];
+public:
+  float step(float x) //class II 
+  {
+    v[0] = v[1];
+    v[1] = v[2];
+    v[2] = (1.525641465230e-3 * x)
+      + ( -0.9410599330 * v[0])
+        + (  1.9349573671 * v[1]);
+    return 
+      (v[0] + v[2])
+      +2 * v[1];
+  }
 };
 
 filter f;
@@ -73,6 +73,7 @@ void loop(){
   duty = 255 * (volt / 5);
   analogWrite(6, duty);
 }
+
 
 
 
