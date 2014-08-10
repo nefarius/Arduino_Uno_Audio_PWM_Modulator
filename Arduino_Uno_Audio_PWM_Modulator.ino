@@ -65,8 +65,11 @@ void setup(){
   // ADC Boost End
 }
 void loop(){
+  // get low-pass filtered input
   raw = f.step(analogRead(0));
+  // convert input signal to voltage value
   volt = (5.0 * raw) / 1023;
+  // calculate duty cycle (2.5V equals 50%)
   duty = 255 * (volt / 5);
   analogWrite(6, duty);
 }
